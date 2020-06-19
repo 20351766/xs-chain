@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 
 	"github.com/hyperledger/fabric/common/tools/cryptogen/ca"
@@ -140,10 +141,10 @@ func testGenerateVerifyingMSP(t *testing.T, nodeOUs bool) {
 	tlsCADir := filepath.Join(testDir, "tlsca")
 	mspDir := filepath.Join(testDir, "msp")
 	// generate signing CA
-	signCA, err := ca.NewCA(caDir, testCAOrg, testCAName, testCountry, testProvince, testLocality, testOrganizationalUnit, testStreetAddress, testPostalCode)
+	signCA, err := ca.NewCA(caDir, testCAOrg, testCAName, testCountry, testProvince, testLocality, testOrganizationalUnit, testStreetAddress, testPostalCode, false)
 	assert.NoError(t, err, "Error generating CA")
 	// generate TLS CA
-	tlsCA, err := ca.NewCA(tlsCADir, testCAOrg, testCAName, testCountry, testProvince, testLocality, testOrganizationalUnit, testStreetAddress, testPostalCode)
+	tlsCA, err := ca.NewCA(tlsCADir, testCAOrg, testCAName, testCountry, testProvince, testLocality, testOrganizationalUnit, testStreetAddress, testPostalCode, false)
 	assert.NoError(t, err, "Error generating CA")
 
 	err = msp.GenerateVerifyingMSP(mspDir, signCA, tlsCA, nodeOUs)

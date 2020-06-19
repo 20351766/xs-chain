@@ -9,7 +9,6 @@ package comm
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
 	"encoding/hex"
 	"fmt"
 	"reflect"
@@ -17,6 +16,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
 	"github.com/hyperledger/fabric/gossip/api"
 	"github.com/hyperledger/fabric/gossip/common"
 	"github.com/hyperledger/fabric/gossip/identity"
@@ -475,7 +475,7 @@ func (c *commImpl) authenticateRemotePeer(stream stream, initiator bool) (*proto
 	if useTLS {
 		// If the remote peer sent its TLS certificate, make sure it actually matches the TLS cert
 		// that the peer used.
-		if !bytes.Equal(remoteCertHash, receivedMsg.TlsCertHash) {
+		if !bytes.Equal(remoteCertHash, receivedMsg.TlsCertHash){
 			return nil, errors.Errorf("Expected %v in remote hash of TLS cert, but got %v", remoteCertHash, receivedMsg.TlsCertHash)
 		}
 	}

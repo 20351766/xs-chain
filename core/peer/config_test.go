@@ -7,13 +7,13 @@ package peer
 
 import (
 	"bytes"
-	"crypto/tls"
 	"fmt"
 	"net"
 	"path/filepath"
 	"testing"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
 	"github.com/hyperledger/fabric/core/comm"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"

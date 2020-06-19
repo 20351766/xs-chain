@@ -7,15 +7,16 @@ SPDX-License-Identifier: Apache-2.0
 package comm
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"errors"
 	"fmt"
+	"github.com/cetcxinlian/cryptogm/sm2"
 	"net"
 	"sync"
 	"sync/atomic"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
+	"github.com/cetcxinlian/cryptogm/x509"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 )
@@ -85,7 +86,12 @@ func NewGRPCServerFromListener(listener net.Listener, serverConfig ServerConfig)
 
 			//set up our TLS config
 			if len(secureConfig.CipherSuites) == 0 {
-				secureConfig.CipherSuites = DefaultTLSCipherSuites
+				// gmtls support
+				if _, ok := cert.PrivateKey.(*sm2.PrivateKey); !ok {
+					secureConfig.CipherSuites = DefaultTLSCipherSuites
+				} else {
+					secureConfig.CipherSuites = DefaultGMTLSCipherSuites
+				}
 			}
 			getCert := func(_ *tls.ClientHelloInfo) (*tls.Certificate, error) {
 				cert := grpcServer.serverCertificate.Load().(tls.Certificate)
@@ -105,7 +111,15 @@ func NewGRPCServerFromListener(listener net.Listener, serverConfig ServerConfig)
 					return time.Now().Add((-1) * timeShift)
 				}
 			}
+
 			grpcServer.tlsConfig.ClientAuth = tls.RequestClientCert
+			// gmtls support
+			if _, gmFlag := cert.PrivateKey.(*sm2.PrivateKey); gmFlag {
+				grpcServer.tlsConfig.GMSupport = &tls.GMSupport{}
+				grpcServer.tlsConfig.MinVersion = 0
+				grpcServer.tlsConfig.ClientAuth = tls.NoClientCert
+			}
+
 			//check if client authentication is required
 			if secureConfig.RequireClientCert {
 				//require TLS client auth

@@ -48,3 +48,6 @@ examples/e2e_cli/crypto-config/*
 # vscode settings
 .vscode
 maven_data.xml
+examples/data_solo/channel-artifacts/
+examples/data_solo/crypto-config/
+
