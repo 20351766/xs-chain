@@ -4,11 +4,11 @@
 package internal
 
 import (
-	"crypto/tls"
 	"errors"
 	"net"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/keepalive"

@@ -9,7 +9,7 @@ package cluster
 import (
 	"bytes"
 	"context"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/pem"
 	"fmt"
 	"sync"

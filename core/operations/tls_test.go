@@ -8,7 +8,7 @@ package operations_test
 
 import (
 	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"io/ioutil"
 	"os"
 	"path/filepath"

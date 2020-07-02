@@ -69,6 +69,10 @@ func (k *ecdsaPrivateKey) PublicKey() (bccsp.Key, error) {
 	return &ecdsaPublicKey{&k.privKey.PublicKey}, nil
 }
 
+func NewEcdsaPrivateKey(privKey *ecdsa.PrivateKey) *ecdsaPrivateKey {
+	return &ecdsaPrivateKey{privKey}
+}
+
 type ecdsaPublicKey struct {
 	pubKey *ecdsa.PublicKey
 }

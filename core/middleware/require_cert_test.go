@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package middleware_test
 
 import (
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"net/http"
 	"net/http/httptest"
 

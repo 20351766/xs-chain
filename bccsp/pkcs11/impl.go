@@ -8,7 +8,7 @@ package pkcs11
 
 import (
 	"crypto/ecdsa"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"os"
 
 	"github.com/hyperledger/fabric/bccsp"

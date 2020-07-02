@@ -9,7 +9,7 @@ package tlsgen
 import (
 	"context"
 	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"fmt"
 	"math/rand"
 	"net"

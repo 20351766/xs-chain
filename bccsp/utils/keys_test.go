@@ -10,7 +10,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/asn1"
 	"encoding/pem"
 	"testing"

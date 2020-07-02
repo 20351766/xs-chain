@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package crypto
 
 import (
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/pem"
 	"time"
 

@@ -12,7 +12,7 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"math/big"

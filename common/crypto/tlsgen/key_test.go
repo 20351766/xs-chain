@@ -8,7 +8,7 @@ package tlsgen
 
 import (
 	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/pem"
 	"testing"
 

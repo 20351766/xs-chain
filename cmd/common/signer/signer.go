@@ -9,7 +9,7 @@ package signer
 import (
 	"crypto/ecdsa"
 	"crypto/rand"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/asn1"
 	"encoding/pem"
 	"io/ioutil"

@@ -8,10 +8,10 @@ package etcdraft
 
 import (
 	"bytes"
-	"crypto/x509"
 	"encoding/pem"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/x509"
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/orderer"

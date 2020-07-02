@@ -9,7 +9,7 @@ package grpclogging_test
 import (
 	"context"
 	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"errors"
 	"fmt"
 	"io"

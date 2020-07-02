@@ -11,7 +11,7 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"crypto/rand"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/hex"
 	"encoding/pem"
 	"fmt"

@@ -8,7 +8,7 @@ package deliver_test
 
 import (
 	"context"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/pem"
 	"io"
 	"time"

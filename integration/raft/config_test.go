@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"crypto/ecdsa"
 	"crypto/rand"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"

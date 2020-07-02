@@ -19,7 +19,7 @@ package sw
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"errors"
 	"reflect"
 	"testing"

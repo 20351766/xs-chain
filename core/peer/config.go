@@ -20,7 +20,6 @@ SPDX-License-Identifier: Apache-2.0
 package peer
 
 import (
-	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -28,6 +27,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
 	"github.com/hyperledger/fabric/core/comm"
 	"github.com/hyperledger/fabric/core/config"
 	"github.com/pkg/errors"

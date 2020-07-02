@@ -12,6 +12,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/cetcxinlian/cryptogm/sm2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -127,6 +128,8 @@ func (ks *fileBasedKeyStore) GetKey(ski []byte) (bccsp.Key, error) {
 		switch k := key.(type) {
 		case *ecdsa.PrivateKey:
 			return &ecdsaPrivateKey{k}, nil
+		case *sm2.PrivateKey:
+			return &sm2PrivateKey{key.(*sm2.PrivateKey)}, nil
 		default:
 			return nil, errors.New("Secret key type not recognized")
 		}
@@ -140,6 +143,8 @@ func (ks *fileBasedKeyStore) GetKey(ski []byte) (bccsp.Key, error) {
 		switch k := key.(type) {
 		case *ecdsa.PublicKey:
 			return &ecdsaPublicKey{k}, nil
+		case *sm2.PublicKey:
+			return &sm2PublicKey{key.(*sm2.PublicKey)}, nil
 		default:
 			return nil, errors.New("Public key type not recognized")
 		}
@@ -177,6 +182,18 @@ func (ks *fileBasedKeyStore) StoreKey(k bccsp.Key) (err error) {
 			return fmt.Errorf("Failed storing AES key [%s]", err)
 		}
 
+	case *sm2PrivateKey:
+		err = ks.storePrivateKey(hex.EncodeToString(k.SKI()), kk.privKey)
+		if err != nil {
+			return fmt.Errorf("Failed storing SM2 private key [%s]", err)
+		}
+
+	case *sm2PublicKey:
+		err = ks.storePublicKey(hex.EncodeToString(k.SKI()), kk.pubKey)
+		if err != nil {
+			return fmt.Errorf("Failed storing SM2 public key [%s]", err)
+		}
+
 	default:
 		return fmt.Errorf("Key type not reconigned [%s]", k)
 	}
@@ -209,6 +226,8 @@ func (ks *fileBasedKeyStore) searchKeystoreForSKI(ski []byte) (k bccsp.Key, err 
 		switch kk := key.(type) {
 		case *ecdsa.PrivateKey:
 			k = &ecdsaPrivateKey{kk}
+		case *sm2.PrivateKey:
+			k = &sm2PrivateKey{key.(*sm2.PrivateKey)}
 		default:
 			continue
 		}

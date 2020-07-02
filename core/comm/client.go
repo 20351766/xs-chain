@@ -8,10 +8,12 @@ package comm
 
 import (
 	"context"
-	"crypto/tls"
-	"crypto/x509"
+	"encoding/pem"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/sm2"
+	"github.com/cetcxinlian/cryptogm/tls"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
@@ -80,6 +82,20 @@ func (client *GRPCClient) parseSecureOptions(opts SecureOptions) error {
 				commLogger.Debugf("error adding root certificate: %v", err)
 				return errors.WithMessage(err,
 					"error adding root certificate")
+			}
+		}
+
+		// add by suyunlong, client support GMT0024
+		block, _ := pem.Decode(opts.ServerRootCAs[0])
+		if block != nil {
+			caCert, err := x509.ParseCertificate(block.Bytes)
+			if err != nil {
+				return errors.WithMessage(err, "FMT0024, parse certificate error")
+			}
+			_, ok := caCert.PublicKey.(*sm2.PublicKey)
+			if ok {
+				client.tlsConfig.GMSupport = &tls.GMSupport{}
+				client.tlsConfig.MinVersion = 0
 			}
 		}
 	}
@@ -202,6 +218,8 @@ func (client *GRPCClient) NewConnection(address string, tlsOptions ...TLSOption)
 		grpc.MaxCallSendMsgSize(client.maxSendMsgSize),
 	))
 
+	//just for test debug
+	//ctx, cancel := context.WithTimeout(context.Background(), time.Minute*10)
 	ctx, cancel := context.WithTimeout(context.Background(), client.timeout)
 	defer cancel()
 	conn, err := grpc.DialContext(ctx, address, dialOpts...)

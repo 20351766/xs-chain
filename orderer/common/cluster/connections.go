@@ -8,9 +8,9 @@ package cluster
 
 import (
 	"bytes"
-	"crypto/x509"
 	"sync"
 
+	"github.com/cetcxinlian/cryptogm/x509"
 	"github.com/hyperledger/fabric/common/metrics"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"

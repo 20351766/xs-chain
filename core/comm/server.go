@@ -7,18 +7,19 @@ SPDX-License-Identifier: Apache-2.0
 package comm
 
 import (
-	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/sm2"
 	"net"
 	"sync"
 	"sync/atomic"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
+	"github.com/cetcxinlian/cryptogm/x509"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/health"
-	healthpb "google.golang.org/grpc/health/grpc_health_v1"
+	//"google.golang.org/grpc/health"
+	//healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 type GRPCServer struct {
@@ -38,8 +39,8 @@ type GRPCServer struct {
 	clientRootCAs map[string]*x509.Certificate
 	// TLS configuration used by the grpc server
 	tlsConfig *tls.Config
-	// Server for gRPC Health Check Protocol.
-	healthServer *health.Server
+	//// Server for gRPC Health Check Protocol.
+	//healthServer *health.Server
 }
 
 // NewGRPCServer creates a new implementation of a GRPCServer given a
@@ -82,7 +83,12 @@ func NewGRPCServerFromListener(listener net.Listener, serverConfig ServerConfig)
 
 			//set up our TLS config
 			if len(secureConfig.CipherSuites) == 0 {
-				secureConfig.CipherSuites = DefaultTLSCipherSuites
+				// gmtls support
+				if _, ok := cert.PrivateKey.(*sm2.PrivateKey); !ok {
+					secureConfig.CipherSuites = DefaultTLSCipherSuites
+				} else {
+					secureConfig.CipherSuites = DefaultGMTLSCipherSuites
+				}
 			}
 			getCert := func(_ *tls.ClientHelloInfo) (*tls.Certificate, error) {
 				cert := grpcServer.serverCertificate.Load().(tls.Certificate)
@@ -103,6 +109,13 @@ func NewGRPCServerFromListener(listener net.Listener, serverConfig ServerConfig)
 				}
 			}
 			grpcServer.tlsConfig.ClientAuth = tls.RequestClientCert
+			// gmtls support
+			if _, gmFlag := cert.PrivateKey.(*sm2.PrivateKey); gmFlag {
+				grpcServer.tlsConfig.GMSupport = &tls.GMSupport{}
+				grpcServer.tlsConfig.MinVersion = 0
+				//grpcServer.tlsConfig.ClientAuth = tls.NoClientCert
+			}
+
 			//check if client authentication is required
 			if secureConfig.RequireClientCert {
 				//require TLS client auth
@@ -159,10 +172,10 @@ func NewGRPCServerFromListener(listener net.Listener, serverConfig ServerConfig)
 
 	grpcServer.server = grpc.NewServer(serverOpts...)
 
-	if serverConfig.HealthCheckEnabled {
-		grpcServer.healthServer = health.NewServer()
-		healthpb.RegisterHealthServer(grpcServer.server, grpcServer.healthServer)
-	}
+	//if serverConfig.HealthCheckEnabled {
+	//	grpcServer.healthServer = health.NewServer()
+	//	healthpb.RegisterHealthServer(grpcServer.server, grpcServer.healthServer)
+	//}
 
 	return grpcServer, nil
 }
@@ -209,18 +222,18 @@ func (gServer *GRPCServer) MutualTLSRequired() bool {
 // Start starts the underlying grpc.Server
 func (gServer *GRPCServer) Start() error {
 	// if health check is enabled, set the health status for all registered services
-	if gServer.healthServer != nil {
-		for name := range gServer.server.GetServiceInfo() {
-			gServer.healthServer.SetServingStatus(
-				name,
-				healthpb.HealthCheckResponse_SERVING,
-			)
-		}
-		gServer.healthServer.SetServingStatus(
-			"",
-			healthpb.HealthCheckResponse_SERVING,
-		)
-	}
+	//if gServer.healthServer != nil {
+	//	for name := range gServer.server.GetServiceInfo() {
+	//		gServer.healthServer.SetServingStatus(
+	//			name,
+	//			healthpb.HealthCheckResponse_SERVING,
+	//		)
+	//	}
+	//	gServer.healthServer.SetServingStatus(
+	//		"",
+	//		healthpb.HealthCheckResponse_SERVING,
+	//	)
+	//}
 	return gServer.server.Serve(gServer.listener)
 }
 

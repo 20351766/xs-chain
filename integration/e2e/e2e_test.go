@@ -9,7 +9,7 @@ package e2e
 import (
 	"context"
 	"crypto/tls"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"

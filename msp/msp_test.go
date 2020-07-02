@@ -9,7 +9,7 @@ package msp
 
 import (
 	"crypto/ecdsa"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"encoding/hex"
 	"encoding/pem"
 	"errors"

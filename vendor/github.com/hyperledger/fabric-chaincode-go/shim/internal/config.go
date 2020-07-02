@@ -4,8 +4,6 @@
 package internal
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -14,6 +12,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/cetcxinlian/cryptogm/tls"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"google.golang.org/grpc/keepalive"
 )
 

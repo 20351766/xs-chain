@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package msp
 
 import (
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"testing"
 
 	"github.com/hyperledger/fabric-protos-go/msp"

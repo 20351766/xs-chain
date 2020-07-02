@@ -14,7 +14,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"crypto/sha512"
-	"crypto/x509"
+	"github.com/cetcxinlian/cryptogm/x509"
 	"crypto/x509/pkix"
 	"encoding/asn1"
 	"fmt"
