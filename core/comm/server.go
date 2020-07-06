@@ -117,7 +117,6 @@ func NewGRPCServerFromListener(listener net.Listener, serverConfig ServerConfig)
 			if _, gmFlag := cert.PrivateKey.(*sm2.PrivateKey); gmFlag {
 				grpcServer.tlsConfig.GMSupport = &tls.GMSupport{}
 				grpcServer.tlsConfig.MinVersion = 0
-				grpcServer.tlsConfig.ClientAuth = tls.NoClientCert
 			}
 
 			//check if client authentication is required
